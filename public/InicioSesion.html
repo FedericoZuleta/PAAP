@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 177.78vh;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            z-index: 1;
+        }
+
+        .login-form {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+        }
+
+        .Login-Titulo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+            display: block;
+        }
+
+        .user-icon img {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding-right: 40px; /* Espacio para el ícono */
+        }
+
+        .input-group input::placeholder {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .Alternar_Contraseña {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #888;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom:90px;
+        }
+
+        button:hover {
+            background-color: #a7a7a7;
+        }
+
+        .login-links a {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        .Otros-links {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .Otros-links a {
+            font-size: 16px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .Otros-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/PHqJ64r9hlc?autoplay=1&mute=1&loop=1&playlist=PHqJ64r9hlc&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+
+    <div class="login-container">
+        <form class="login-form" action="/login" method="POST">
+            <label class="Login-Titulo">Inicio de Sesión</label>
+
+            <div class="user-icon">
+                <img src="/images/icono usuario.png">
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="Usuario" name="Usuario" placeholder="Usuario" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="Contraseña" name="Contraseña" placeholder="Contraseña" required>
+                <button type="button" class="Alternar_Contraseña" onclick="AlternarC()">👁️</button>
+            </div>
+
+            <button type="submit">Ingresar</button>
+
+            <div class="login-links">
+                <a href="#">¿Olvidaste tu Usuario?</a>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+                <a href="#">Ingreso de visitantes</a>
+            </div>
+
+            <div class="Otros-links">
+                <a href="#">Inscripciones</a>
+                <a href="#">Aplicaciones</a>
+                <a href="#">Otros...</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function AlternarC() {
+            const passwordInput = document.getElementById('Contraseña');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        }
+    </script>
+</body>
+
+</html>

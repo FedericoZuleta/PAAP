@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Profesores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Listado de Profesores</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody id="profesoresTableBody">
+            <!-- Aquí se insertarán las filas de la tabla dinámicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        // Función para obtener los profesores de la base de datos
+        async function cargarProfesores() {
+            try {
+                const response = await fetch('http://localhost:3000/profesores');
+                const profesores = await response.json();
+
+                // Verificar si la respuesta fue exitosa
+                if (response.ok) {
+                    const tableBody = document.getElementById('profesoresTableBody');
+                    tableBody.innerHTML = ''; // Limpiar cualquier contenido previo
+
+                    // Iterar sobre los profesores y agregar filas a la tabla
+                    profesores.forEach(profesor => {
+                        const row = document.createElement('tr');
+
+                        const cedulaCell = document.createElement('td');
+                        cedulaCell.textContent = profesor.Cedula;
+                        row.appendChild(cedulaCell);
+
+                        const nombreCell = document.createElement('td');
+                        nombreCell.textContent = profesor.Nombre;
+                        row.appendChild(nombreCell);
+
+                        const usuarioCell = document.createElement('td');
+                        usuarioCell.textContent = profesor.Usuario;
+                        row.appendChild(usuarioCell);
+
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    alert('Error al obtener el listado de profesores: ' + profesores.message);
+                }
+            } catch (error) {
+                alert('Error de conexión: ' + error.message);
+            }
+        }
+
+        // Llamar a la función para cargar los profesores al cargar la página
+        cargarProfesores();
+    </script>
+</body>
+</html>

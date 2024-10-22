@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Administrador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            width: 100%;
+            cursor: pointer;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h2>Formulario de Administrador</h2>
+    <form id="adminForm">
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" name="cedula" required>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <button type="submit" id="agregarBtn" disabled>Agregar</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('adminForm');
+        const inputs = form.querySelectorAll('input');
+        const agregarBtn = document.getElementById('agregarBtn');
+
+        // Función para habilitar o deshabilitar el botón
+        function verificarCampos() {
+            const todosLlenos = Array.from(inputs).every(input => input.value.trim() !== '');
+            agregarBtn.disabled = !todosLlenos;
+        }
+
+        // Verifica los campos en cada entrada
+        inputs.forEach(input => input.addEventListener('input', verificarCampos));
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const data = {
+                cedula: document.getElementById('cedula').value,
+                nombre: document.getElementById('nombre').value,
+                usuario: document.getElementById('usuario').value,
+                contrasena: document.getElementById('contrasena').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/agregar-profesor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Profesor agregado correctamente');
+                    form.reset();
+                    agregarBtn.disabled = true;
+                } else {
+                    alert('Error al agregar el profesor: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error de conexión: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Asesoría</title>
+    <style>
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Cambié la posición para que esté visible */
+            background-color: #162f46;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0f1f30;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px; 
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px; 
+        }
+
+        input[type="text"], select, input[type="time"] {
+            margin-bottom: 15px; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+        }
+
+        button {
+            padding: 10px; 
+            background-color: #083e65; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+        }
+
+        button:hover {
+            background-color: #162f46; 
+        }
+
+        /* Estilo para el listado de materias */
+        #materiasList {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Asignar Asesoría</h1>
+    
+    <form id="asignarForm">
+        <label for="idMateria">ID de Materia:</label>
+        <input type="text" id="idMateria" name="idMateria" placeholder="Ingrese el ID de la materia" required>
+
+        <label for="cedula">Cédula del Profesor:</label>
+        <input type="text" id="cedula" name="cedula" placeholder="Ingrese la cédula del profesor" required>
+
+        <label for="horaIni">Hora de Inicio:</label>
+        <input type="time" id="horaIni" name="horaIni" required>
+
+        <label for="dia">Día:</label>
+        <select id="dia" name="dia" required>
+            <option value="" disabled selected>Seleccione un día</option>
+            <option value="lunes">Lunes</option>
+            <option value="martes">Martes</option>
+            <option value="miercoles">Miércoles</option>
+            <option value="jueves">Jueves</option>
+            <option value="viernes">Viernes</option>
+        </select>
+
+        <button type="submit">Asignar Asesoría</button>
+    </form>
+
+    <div id="materiasList">
+        <h2>Materias Disponibles</h2>
+        <table id="materiasTable">
+            <tr>
+                <th>ID de Materia</th>
+                <th>Nombre de Materia</th>
+            </tr>
+            <!-- Aquí se llenarán las filas con JavaScript -->
+        </table>
+    </div>
+
+    <script>
+        // Lógica para cargar las materias
+        async function cargarMaterias() {
+            try {
+                const response = await fetch('http://localhost:3000/get-materias'); // Ajusta la URL según tu endpoint
+                const materias = await response.json();
+                
+                const table = document.getElementById('materiasTable');
+                
+                materias.forEach(materia => {
+                    const row = table.insertRow();
+                    row.insertCell(0).textContent = materia.IdMateria; // Asegúrate de que los nombres de las propiedades sean correctos
+                    row.insertCell(1).textContent = materia.Nombre; // Asegúrate de que los nombres de las propiedades sean correctos
+                });
+            } catch (error) {
+                console.error('Error al cargar materias:', error);
+            }
+        }
+
+        // Lógica para asignar la asesoría
+        document.getElementById('asignarForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Evita el envío del formulario
+
+            const idMateria = document.getElementById('idMateria').value;
+            const cedula = document.getElementById('cedula').value;
+            const horaIni = document.getElementById('horaIni').value;
+            const dia = document.getElementById('dia').value;
+
+            const response = await fetch('http://localhost:3000/asignar-asesoria', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ idMateria, cedula, horaIni, dia })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('Asesoría asignada correctamente');
+                // Limpiar los campos del formulario si es necesario
+                document.getElementById('asignarForm').reset();
+            } else {
+                alert('Error al asignar la asesoría: ' + data.message);
+            }
+        });
+
+        // Cargar las materias al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarMaterias);
+    </script>
+</body>
+</html>

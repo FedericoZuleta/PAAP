@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma de Asesorías</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #162f46;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0f1f30;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        img {
+            width: 100vw;
+            height: auto;
+            display: block;
+        }
+
+        table {
+            width: 95%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #083e65;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #083e65;
+            color: whitesmoke;
+            font-weight: bold;
+        }
+
+        .ocupada {
+            background-color: #f1f7ff;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="S_Estudiantes.html" class="back-button">&#8592; Regresar</a>
+    <img src="images/c.png">
+    <table>
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+            </tr>
+        </thead>
+        <tbody id="asesoriasTableBody">
+            <tr>
+                <td>08:00 - 09:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>09:00 - 10:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>10:00 - 11:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>11:00 - 12:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>12:00 - 13:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>13:00 - 14:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>14:00 - 15:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>15:00 - 16:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>16:00 - 17:00</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        async function cargarAsesorias() {
+            try {
+                // Modificación de la URL para hacer fetch correctamente
+                const response = await fetch('http://localhost:3000/get-asesorias');
+                const asesorias = await response.json();
+
+                if (response.ok) {
+                    const tableBody = document.getElementById('asesoriasTableBody');
+
+                    // Limpiar las celdas de días para evitar datos duplicados
+                    Array.from(tableBody.rows).forEach(row => {
+                        for (let i = 1; i < row.cells.length; i++) {
+                            row.cells[i].innerHTML = ''; // Limpiar las celdas de los días
+                        }
+                    });
+
+                    // Iterar sobre las asesorías y colocarlas en sus casillas correspondientes
+                    asesorias.forEach(asesoria => {
+                        const diaIndex = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].indexOf(asesoria.Dia) + 1;
+
+                        const horaIndices = {
+                            '08:00': 0,
+                            '09:00': 1,
+                            '10:00': 2,
+                            '11:00': 3,
+                            '12:00': 4,
+                            '13:00': 5,
+                            '14:00': 6,
+                            '15:00': 7,
+                            '16:00': 8,
+                            '17:00': 9
+                        };
+
+                        const horaIndexIni = horaIndices[asesoria.HoraIni];
+                        const horaIndexFin = horaIndices[asesoria.HoraFin];
+
+                        if (horaIndexIni !== undefined && diaIndex !== 0) {
+                            const horasOcupadas = horaIndexFin - horaIndexIni;
+
+                            for (let i = 0; i < horasOcupadas; i++) {
+                                const cell = tableBody.rows[horaIndexIni + i].cells[diaIndex];
+
+                                if (cell.innerHTML === '') {
+                                    cell.innerHTML = `
+                    <div>
+                        <strong>${asesoria.NombreProfesor}</strong><br>
+                        ${asesoria.NombreMateria}<br>
+                        <a href="${asesoria.Link_Asesoria}" target="_blank">Link Asesoría</a><br>
+                        <a href="${asesoria.Link_Material}" target="_blank">Link Material</a>
+                    </div>
+                `;
+                                    // Agrega la clase CSS para resaltar la celda
+                                    cell.classList.add('ocupada');
+                                }
+                            }
+                        }
+                    });
+
+                } else {
+                    alert('Error al obtener el cronograma de asesorías: ' + asesorias.message);
+                }
+            } catch (error) {
+                alert('Error de conexión: ' + error.message);
+            }
+        }
+
+        // Llamar a la función para cargar las asesorías al cargar la página
+        cargarAsesorias();
+    </script>
+</body>
+
+</html>

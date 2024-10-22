@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Profesor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            width: 100%;
+            cursor: pointer;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #resultado {
+            margin-top: 20px;
+            background: #e7f3fe;
+            border: 1px solid #bcdff1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Buscar Profesor</h2>
+    <form id="buscarForm">
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" name="cedula" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div id="resultado" style="display:none;">
+        <h3>Profesor Encontrado:</h3>
+        <p id="profesorInfo"></p>
+        <button id="eliminarBtn">Eliminar Profesor</button>
+    </div>
+
+    <script>
+        const buscarForm = document.getElementById('buscarForm');
+        const resultadoDiv = document.getElementById('resultado');
+        const profesorInfo = document.getElementById('profesorInfo');
+        const eliminarBtn = document.getElementById('eliminarBtn');
+
+        buscarForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const cedula = document.getElementById('cedula').value;
+
+            // Buscar el profesor
+            const response = await fetch(`http://localhost:3000/buscar-profesor?cedula=${cedula}`);
+            const data = await response.json();
+
+            if (data.success) {
+                resultadoDiv.style.display = 'block';
+                profesorInfo.innerHTML = `
+                    <strong>Cédula:</strong> ${data.data.Cedula}<br>
+                    <strong>Nombre:</strong> ${data.data.Nombre}<br>
+                    <strong>Usuario:</strong> ${data.data.Usuario}<br>
+                    <strong>Tipo de Usuario:</strong> ${data.data.TipoUsuario}<br>
+                `;
+                eliminarBtn.onclick = async () => {
+                    const eliminarResponse = await fetch(`http://localhost:3000/eliminar-profesor`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ cedula })
+                    });
+                    const eliminarData = await eliminarResponse.json();
+
+                    if (eliminarData.success) {
+                        alert('Profesor eliminado correctamente');
+                        resultadoDiv.style.display = 'none';
+                        buscarForm.reset();
+                    } else {
+                        alert('Error al eliminar el profesor: ' + eliminarData.message);
+                    }
+                };
+            } else {
+                alert(data.message);
+                resultadoDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

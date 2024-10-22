@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAAP</title>
+    <style>
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Cambié la posición para que esté visible */
+            background-color: #162f46;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0f1f30;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px; 
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px; 
+        }
+
+        input[type="text"], select, input[type="time"] {
+            margin-bottom: 15px; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+        }
+
+        button {
+            padding: 10px; 
+            background-color: #083e65; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+        }
+
+        button:hover {
+            background-color: #162f46; 
+        }
+
+        /* Estilo para el listado de asesorías */
+        #asesoriasList {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <a href="S_Profesores.html" class="back-button">&#8592; Regresar</a>
+    <h1>PAAP PROFESORES</h1>
+    
+    <!-- Listado de asesorías -->
+    <div id="asesoriasList">
+        <h2>Asesorías Asignadas</h2>
+        <table id="asesoriasTable">
+            <tr>
+                <th>Día</th>
+                <th>Hora de Inicio</th>
+                <th>Link de Asesoría</th>
+                <th>Link de Material</th>
+            </tr>
+            <!-- Aquí se llenarán las filas con JavaScript -->
+        </table>
+    </div>
+
+    <form id="linksForm">
+        <label for="meetLink">Link de Google Meet:</label>
+        <input type="text" id="meetLink" name="meetLink" placeholder="Ingrese el enlace de Google Meet" required>
+
+        <label for="docsLink">Link de Google Docs:</label>
+        <input type="text" id="docsLink" name="docsLink" placeholder="Ingrese el enlace de Google Docs" required>
+
+        <label for="dia">Día:</label>
+        <select id="dia" name="dia" required>
+            <option value="" disabled selected>Seleccione un día</option>
+            <option value="lunes">Lunes</option>
+            <option value="martes">Martes</option>
+            <option value="miercoles">Miércoles</option>
+            <option value="jueves">Jueves</option>
+            <option value="viernes">Viernes</option>
+        </select>
+
+        <label for="horaIni">Hora de Inicio:</label>
+        <input type="time" id="horaIni" name="horaIni" required>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <script>
+        // Lógica para cargar las asesorías
+        async function cargarAsesorias() {
+            try {
+                const response = await fetch('http://localhost:3000/get-asesorias');
+                if (!response.ok) {
+                    throw new Error('Error al obtener las asesorías');
+                }
+
+                const asesorias = await response.json();
+                const table = document.getElementById('asesoriasTable');
+
+                asesorias.forEach(asesoria => {
+                    const row = table.insertRow();
+                    row.insertCell(0).textContent = asesoria.Dia;
+                    row.insertCell(1).textContent = asesoria.HoraIni;
+                    row.insertCell(2).textContent = asesoria.Link_Asesoria;
+                    row.insertCell(3).textContent = asesoria.Link_Material;
+                });
+            } catch (error) {
+                console.error('Error al cargar asesorías:', error);
+            }
+        }
+
+        // Lógica para guardar los links
+        document.getElementById('linksForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Evita el envío del formulario
+
+            const meetLink = document.getElementById('meetLink').value;
+            const docsLink = document.getElementById('docsLink').value;
+            const dia = document.getElementById('dia').value;
+            const horaIni = document.getElementById('horaIni').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/actualizar-asesoria', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ dia, horaIni, linkMeet: meetLink, linkDocs: docsLink })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Links guardados correctamente');
+                    // Recargar las asesorías para reflejar los cambios
+                    cargarAsesorias();
+                } else {
+                    alert('Error al guardar los links: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error al guardar los links:', error);
+            }
+        });
+
+        // Cargar las asesorías al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarAsesorias);
+    </script>
+</body>
+</html>
