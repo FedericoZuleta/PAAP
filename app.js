@@ -152,11 +152,11 @@ app.post('/login', (req, res) => {
 
     // Lógica de validación de credenciales
     if (Usuario === 'federico.avalos523@pascualbravo.edu.co' && Contraseña === '123456789') {
-        res.redirect('/S_Estudiantes.html');
+        res.redirect('/SicauEstudiantes.html');
     } else if (Usuario === 'jaime.guerra459@pascualbravo.edu.co' && Contraseña === '234567') {
         res.redirect('/S_Profesores.html');
     } else if (Usuario === 'Admin598@pascualbravo.edu.co' && Contraseña === '789456123') {
-        res.redirect('/S_Admin.html');
+        res.redirect('/P_Admin.html');
     } else {
         res.send('Credenciales incorrectas. Intenta nuevamente.');
     }

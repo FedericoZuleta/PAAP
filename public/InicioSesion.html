@@ -47,45 +47,50 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            max-width: 500px;
+            max-width: 400px; /* Reduce el ancho máximo del contenedor */
             z-index: 1;
+            padding: 20px; /* Espacio alrededor del contenedor */
         }
 
         .login-form {
             background-color: rgba(0, 0, 0, 0.7);
-            padding: 40px;
+            padding: 30px;
             border-radius: 15px;
             border: 1px solid #ccc;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             text-align: center;
             width: 100%;
+            max-width: 350px; /* Reduce aún más el ancho del formulario */
+            max-height: 80vh; /* Limita el alto máximo */
+            margin: 20px 0; /* Añade margen vertical */
+            overflow-y: auto; /* Permite scroll si es necesario */
         }
 
         .Login-Titulo {
-            font-size: 28px;
+            font-size: 24px; /* Reduce el tamaño del título */
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: white;
             display: block;
         }
 
         .user-icon img {
-            width: 220px;
-            height: 220px;
-            margin-bottom: 20px;
+            width: 100px; /* Reduce el tamaño de la imagen */
+            height: 100px; /* Reduce el tamaño de la imagen */
+            margin-bottom: 15px;
             border-radius: 50%;
             object-fit: cover;
         }
 
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduce el espacio entre los inputs */
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px;
-            font-size: 18px;
+            padding: 10px; /* Reduce el padding de los inputs */
+            font-size: 16px; /* Reduce el tamaño de la fuente de los inputs */
             border: 1px solid #ccc;
             border-radius: 8px;
             padding-right: 40px; /* Espacio para el ícono */
@@ -93,7 +98,7 @@
 
         .input-group input::placeholder {
             color: #888;
-            font-size: 16px;
+            font-size: 14px; /* Reduce el tamaño del placeholder */
         }
 
         .Alternar_Contraseña {
@@ -105,7 +110,7 @@
             border: none;
             outline: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px; /* Reduce el tamaño del ícono */
             color: #888;
             width: 30px;
             height: 30px;
@@ -116,15 +121,15 @@
 
         button {
             width: 100%;
-            padding: 12px;
-            font-size: 18px;
+            padding: 10px; /* Reduce el padding del botón */
+            font-size: 16px; /* Reduce el tamaño del texto del botón */
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-bottom:90px;
+            margin-bottom: 15px; /* Reduce el margen inferior */
         }
 
         button:hover {
@@ -133,8 +138,8 @@
 
         .login-links a {
             display: block;
-            margin-top: 15px;
-            font-size: 16px;
+            margin-top: 10px; /* Reduce el espacio entre los enlaces */
+            font-size: 14px; /* Reduce el tamaño de la fuente de los enlaces */
             color: white;
             text-decoration: none;
             font-weight: bold;
@@ -145,15 +150,15 @@
         }
 
         .Otros-links {
-            margin-top: 20px;
+            margin-top: 15px; /* Reduce el margen superior */
             border-top: 1px solid #ccc;
-            padding-top: 15px;
+            padding-top: 10px; /* Reduce el padding superior */
             display: flex;
             justify-content: space-around;
         }
 
         .Otros-links a {
-            font-size: 16px;
+            font-size: 14px; /* Reduce el tamaño de los enlaces */
             color: white;
             text-decoration: none;
             font-weight: bold;
@@ -166,6 +171,7 @@
 </head>
 
 <body>
+    
     <div class="video-background">
         <iframe src="https://www.youtube.com/embed/PHqJ64r9hlc?autoplay=1&mute=1&loop=1&playlist=PHqJ64r9hlc&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
