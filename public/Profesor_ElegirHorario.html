@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Horario de Asesoría</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #000;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 28px;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #293a52;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Estilos de los botones */
+        button {
+            padding: 10px 20px;
+            background-color: #293a52;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1f2d45;
+        }
+
+        /* Estilos del formulario adicional */
+        #formulario-seleccion {
+            display: none;
+            width: 80%;
+            max-width: 500px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        #formulario-seleccion h3 {
+            color: #293a52;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        span,
+        select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
+        /* Estilo de input radio */
+        input[type="radio"] {
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Selecciona una Asesoría Disponible</h1>
+    <table id="tabla-asesorias">
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Departamento</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+                <th>Día</th>
+                <th>Estado</th>
+                <th>Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las asesorías se cargarán aquí con JavaScript -->
+        </tbody>
+    </table>
+
+    <div id="formulario-seleccion" style="display: none;">
+        <h3>Información Adicional</h3>
+        <label> Cédula del Profesor:</label>
+        <span id="cedula"></span><br><br>
+
+        <label for="IdMateria">Selecciona la Materia:</label>
+        <select id="IdMateria" name="IdMateria" required>
+            <option value="" disabled selected>Selecciona una materia</option>
+        </select><br><br>
+
+        <button onclick="guardarSeleccion()">Guardar Selección</button>
+        <button onclick="liberarAsesoria()">Liberar Asesoría</button>
+    </div>
+
+    <script>
+        let Cedula = ""; // Variable global para almacenar la cédula
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Obtener la cédula actual desde el backend
+            const cedulaResponse = await fetch('/get-cedula_actual');
+            const cedulaData = await cedulaResponse.json();
+
+            // Asegurarte de que tienes la cédula en Cedula
+            Cedula = cedulaData.cedula_actual || "";
+
+            // Mostrar cédula en el formulario si existe
+            if (Cedula) {
+                document.getElementById('cedula').innerText = Cedula;
+            } else {
+                console.warn("La cédula no está disponible");
+            }
+
+            // Cargar asesorías
+            const response = await fetch('/asesorias-disponibles');
+            const asesorias = await response.json();
+            const tablaBody = document.getElementById("tabla-asesorias").querySelector("tbody");
+
+            // Cargar asesorías en la tabla
+            asesorias.forEach(asesoria => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+            <td>${asesoria.Materia}</td>
+            <td>${asesoria.Departamento}</td>
+            <td>${asesoria.HoraIni}</td>
+            <td>${asesoria.HoraFin}</td>
+            <td>${asesoria.Dia}</td>
+            <td>${asesoria.Estado}</td>
+            <td><input type="radio" name="seleccion" value="${asesoria.IdAsesoria}" onclick="mostrarFormulario('${asesoria.IdAsesoria}')"></td>
+        `;
+                tablaBody.appendChild(fila);
+            });
+
+            // Cargar las materias en el combobox
+            cargarMaterias();
+        });
+
+        async function cargarMaterias() {
+            try {
+                const response = await fetch('http://localhost:3000/get-materias');
+                const materias = await response.json();
+                const select = document.getElementById('IdMateria');
+
+                // Agregar opciones al combobox
+                materias.forEach(materia => {
+                    const option = document.createElement('option');
+                    option.value = materia.IdMateria;
+                    option.textContent = materia.Nombre;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar materias:', error);
+            }
+        }
+
+        async function liberarAsesoria() {
+            if (!selectedAsesoria.idAsesoria) {
+                alert("Por favor selecciona una asesoría para liberar.");
+                return;
+            }
+
+            const response = await fetch('/liberar-asesoria', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    idAsesoria: selectedAsesoria.idAsesoria
+                })
+            });
+
+            const resultado = await response.json();
+            if (resultado.success) {
+                alert("Asesoría liberada con éxito.");
+                location.reload();
+            } else {
+                alert("Error al liberar la asesoría. Inténtalo de nuevo.");
+            }
+        }
+
+        let selectedAsesoria = {};
+
+        function mostrarFormulario(idAsesoria) {
+            const filaSeleccionada = document.querySelector(`input[value="${idAsesoria}"]`).closest("tr");
+
+            selectedAsesoria = {
+                idAsesoria: idAsesoria,
+                idDepartamento: filaSeleccionada.cells[1].innerText,
+                horaInicio: filaSeleccionada.cells[2].innerText,
+                horaFin: filaSeleccionada.cells[3].innerText,
+                dia: filaSeleccionada.cells[4].innerText
+            };
+
+            document.getElementById("formulario-seleccion").style.display = "block";
+            document.getElementById('cedula').innerText = Cedula;
+            document.getElementById("IdMateria").value = '';
+        }
+
+        async function guardarSeleccion() {
+            const seleccion = document.querySelector('input[name="seleccion"]:checked');
+            if (!seleccion) {
+                alert("Por favor selecciona una asesoría.");
+                return;
+            }
+
+            const idMateria = document.getElementById('IdMateria').value;
+            if (!Cedula || !idMateria) {
+                alert("Por favor selecciona una materia.");
+                return;
+            }
+
+            const response = await fetch('/reservar-asesoria', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    idAsesoria: selectedAsesoria.idAsesoria,
+                    cedula: Cedula,
+                    idMateria: idMateria,
+                    idDepartamento: selectedAsesoria.idDepartamento,
+                    horaInicio: selectedAsesoria.horaInicio,
+                    horaFin: selectedAsesoria.horaFin,
+                    dia: selectedAsesoria.dia
+                })
+            });
+
+            const resultado = await response.json();
+            if (resultado.success) {
+                alert("Asesoría reservada con éxito.");
+                location.reload();
+            } else {
+                alert("Error al reservar la asesoría. Inténtalo de nuevo.");
+            }
+        }
+    </script>
+</body>
+
+</html>

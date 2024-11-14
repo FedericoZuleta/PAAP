@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAAP</title>
     <style>
+            /* Fuente y estilos generales */
+            body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Botón de regreso */
         .back-button {
             position: absolute;
             top: 20px;
-            left: 1200px; /* Cambié la posición para que esté visible */
-            background-color: #162f46;
-            color: white;
+            left: 20px;
+            background-color: #293a52;
+            color: #fff;
             padding: 10px 15px;
             text-decoration: none;
             border-radius: 5px;
@@ -19,66 +33,109 @@
         }
 
         .back-button:hover {
-            background-color: #0f1f30;
+            background-color: #293a52;
         }
 
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin-bottom: 20px; 
-        }
-
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
+        /* Estilo para encabezados */
+        h1 {
+            font-size: 28px;
+            color: #162f46;
+            margin: 20px 0;
             text-align: center;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        h2 {
+            font-size: 24px;
+            color: #162f46;
+            margin: 20px 0;
+            text-align: center;
         }
 
+        /* Contenedor para la tabla de asesorías */
+        #asesoriasList {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Formulario de enlaces y carga de archivos */
         form {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px; 
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 30px;
         }
 
-        input[type="text"], select, input[type="time"] {
-            margin-bottom: 15px; 
-            padding: 10px; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
+        label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"], select, input[type="time"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
         }
 
         button {
-            padding: 10px; 
-            background-color: #083e65; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
+            width: 100%;
+            padding: 12px;
+            background-color: #293a52;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #162f46; 
+            background-color: #293a52;
         }
 
-        /* Estilo para el listado de asesorías */
-        #asesoriasList {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        /* Responsividad */
+        @media (max-width: 768px) {
+            #asesoriasList, form {
+                width: 95%;
+            }
         }
- 
     </style>
 </head>
+
 <body>
     <a href="S_Profesores.html" class="back-button">&#8592; Regresar</a>
     <h1>PAAP PROFESORES</h1>
-    
+
     <!-- Listado de asesorías -->
     <div id="asesoriasList">
         <h2>Asesorías Asignadas</h2>
@@ -99,6 +156,20 @@
 
         <label for="docsLink">Link de Google Docs:</label>
         <input type="text" id="docsLink" name="docsLink" placeholder="Ingrese el enlace de Google Docs" required>
+
+        <label for="Materia">Materia:</label>
+        <select id="Materia" name="Materia" required>
+            <option value="" disabled selected>Seleccione una materia</option>
+            <option value="1">Matemáticas</option>
+            <option value="2">Cálculo Integral</option>
+            <option value="3">Cálculo Diferencial</option>
+            <option value="4">Ciencia de los Materiales</option>
+            <option value="5">Termodinámica</option>
+            <option value="6">Diseño de Sistemas Térmicos - Combustión</option>
+            <option value="7">ELECTRÓNICA II</option>
+            <option value="8">CIRCUITOS DIGITALES</option>
+            <option value="9">SISTEMAS AUTOMÁTICOS DE CONTROL</option>
+        </select>
 
         <label for="dia">Día:</label>
         <select id="dia" name="dia" required>
@@ -146,6 +217,7 @@
 
             const meetLink = document.getElementById('meetLink').value;
             const docsLink = document.getElementById('docsLink').value;
+            const IdMateria = document.getElementById('Materia').value;
             const dia = document.getElementById('dia').value;
             const horaIni = document.getElementById('horaIni').value;
 
@@ -155,7 +227,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ dia, horaIni, linkMeet: meetLink, linkDocs: docsLink })
+                    body: JSON.stringify({ dia, IdMateria, horaIni, linkMeet: meetLink, linkDocs: docsLink })
                 });
 
                 const data = await response.json();
@@ -174,5 +246,154 @@
         // Cargar las asesorías al cargar la página
         document.addEventListener('DOMContentLoaded', cargarAsesorias);
     </script>
+    <h1>Subir Material Académico</h1>
+
+    <form id="upload-form">
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" name="cedula" required>
+
+        <label for="nombreProfesor">Nombre del Profesor:</label>
+        <input type="text" id="nombreProfesor" name="nombreProfesor" disabled>
+
+        <label for="departamento">Departamento:</label>
+        <select id="departamento" name="departamento" required disabled>
+            <option value="" disabled selected>Seleccionar Departamento</option>
+        </select>
+
+        <label for="materia">Materia:</label>
+        <select id="materia" name="materia" required disabled>
+            <option value="" disabled selected>Seleccionar Materia</option>
+        </select>
+
+        <label for="archivo">Archivo:</label>
+        <input type="file" id="archivo" name="archivo">
+
+        <label for="enlaceDrive">Enlace de Drive:</label>
+        <input type="text" id="enlaceDrive" name="enlaceDrive">
+
+        <button type="submit">Subir</button>
+    </form>
+
+    <script>
+        document.getElementById("cedula").addEventListener("blur", function () {
+            const cedula = document.getElementById("cedula").value;
+
+            if (cedula) {
+                fetch(`/obtenerNombreYDepartamentos/${cedula}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.nombre) {
+                            document.getElementById("nombreProfesor").value = data.nombre;
+
+                            const departamentoSelect = document.getElementById("departamento");
+                            const materiaSelect = document.getElementById("materia");
+                            departamentoSelect.innerHTML = '<option value="" disabled selected>Seleccionar Departamento</option>';
+                            materiaSelect.innerHTML = '<option value="" disabled selected>Seleccionar Materia</option>';
+
+                            data.departamentos.forEach(depto => {
+                                const option = document.createElement("option");
+                                option.value = depto.IdDepartamento;
+                                option.textContent = depto.Nombre;
+                                departamentoSelect.appendChild(option);
+                            });
+
+                            departamentoSelect.disabled = false;
+                        } else {
+                            alert("No se encontró la cédula.");
+                        }
+                    })
+                    .catch(error => console.error("Error al obtener datos del profesor:", error));
+            } else {
+                alert("Por favor ingresa una cédula.");
+            }
+        });
+
+        document.getElementById("departamento").addEventListener("change", function () {
+            const departamentoId = this.value;
+            const materiaSelect = document.getElementById("materia");
+
+            materiaSelect.innerHTML = '<option value="" disabled selected>Seleccionar Materia</option>';
+
+            if (departamentoId) {
+                fetch(`/obtenerMateriasPorDepartamento/${departamentoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.materias) {
+                            data.materias.forEach(materia => {
+                                const option = document.createElement("option");
+                                option.value = materia.IdMateria;
+                                option.textContent = materia.Nombre;
+                                materiaSelect.appendChild(option);
+                            });
+
+                            materiaSelect.disabled = false;
+                        } else {
+                            alert("No se encontraron materias para este departamento.");
+                        }
+                    })
+                    .catch(error => console.error("Error al obtener las materias:", error));
+            }
+        });
+
+        document.getElementById("upload-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const cedula = document.getElementById("cedula").value;
+            const nombreProfesor = document.getElementById("nombreProfesor").value;
+            const departamentoSelect = document.getElementById("departamento");
+            const materiaSelect = document.getElementById("materia");
+            const archivo = document.getElementById("archivo").files[0];
+            const enlaceDrive = document.getElementById("enlaceDrive").value;
+
+            // Si el enlace de Drive tiene un valor, no es necesario seleccionar un archivo
+            if (enlaceDrive && archivo) {
+                alert("Solo puedes seleccionar un archivo o proporcionar un enlace, no ambos.");
+                return;
+            }
+
+            // Si no hay archivo ni enlace, mostrar mensaje de error
+            if (!archivo && !enlaceDrive) {
+                alert("Por favor selecciona un archivo o proporciona un enlace de Drive.");
+                return;
+            }
+
+            const nombreDepartamento = departamentoSelect.options[departamentoSelect.selectedIndex].text;
+            const nombreMateria = materiaSelect.options[materiaSelect.selectedIndex].text;
+
+            const formData = new FormData();
+            formData.append("cedula", cedula);
+            formData.append("nombreProfesor", nombreProfesor);
+            formData.append("departamentoId", departamentoSelect.value);
+            formData.append("departamentoNombre", nombreDepartamento);
+            formData.append("materiaId", materiaSelect.value);
+            formData.append("materiaNombre", nombreMateria);
+
+            // Agregar el archivo o el enlace
+            if (archivo) {
+                formData.append("archivo", archivo);
+            }
+            if (enlaceDrive) {
+                formData.append("enlaceDrive", enlaceDrive);
+            }
+
+            fetch("/subir", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.mensaje) {
+                        alert(data.mensaje);
+                        document.getElementById("upload-form").reset();
+                    } else {
+                        alert("Error al guardar los datos.");
+                    }
+                })
+                .catch(error => console.error("Error al enviar el formulario:", error));
+        });
+    </script>
+
+
 </body>
+
 </html>

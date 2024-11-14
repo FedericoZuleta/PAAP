@@ -4,7 +4,7 @@ const connectionSettings = {
     server: "localhost",
     database: "PAAPV",
     user: "sa",
-    password: "Jgiraldo2004",
+    password: "12345",
     options: {
         trustedConnection: true, // Usa la conexión de Windows
         encrypt: true,

@@ -177,7 +177,7 @@
     </div>
 
     <div class="login-container">
-        <form class="login-form" action="/login" method="POST">
+        <form class="login-form" id="loginForm">
             <label class="Login-Titulo">Inicio de Sesión</label>
 
             <div class="user-icon">
@@ -215,6 +215,33 @@
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
         }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url; // Redirigir a la URL del backend
+                } else {
+                    const result = await response.json();
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error("Error en la solicitud de inicio de sesión:", error);
+                alert("Error en el servidor. Inténtelo de nuevo más tarde.");
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
     </script>
 </body>
 

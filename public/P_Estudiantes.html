@@ -4,14 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronograma de Asesorías</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Horarios de Asesorías</title>
     <style>
+        /* Estilos generales para la página */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            padding-top: 50px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 90%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            width: 150px;
+        }
+
+        th {
+            background-color: #293a52;
+            color: white;
+            font-size: 1rem;
+        }
+
+        td {
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        .empty {
+            background-color: #f9f9f9;
+        }
+
+        /* Botón de regresar */
         .back-button {
             position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #162f46;
+            background-color: #293a52;
             color: white;
             padding: 10px 15px;
             text-decoration: none;
@@ -21,210 +86,212 @@
         }
 
         .back-button:hover {
-            background-color: #0f1f30;
+            background-color: #293a52;
         }
 
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        img {
-            width: 100vw;
-            height: auto;
+        /* Barra de búsqueda */
+        .search-bar {
+            margin: 10px auto;
+            width: 80%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #293a52;
+            border-radius: 5px;
             display: block;
-        }
-
-        table {
-            width: 95%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #083e65;
-            padding: 15px;
             text-align: center;
         }
 
-        th {
-            background-color: #083e65;
-            color: whitesmoke;
-            font-weight: bold;
+        /* Estilo para resaltar texto */
+        .highlight {
+            background-color: yellow;
         }
 
-        .ocupada {
-            background-color: #f1f7ff;
+        /* Estilos para el menú */
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            right: 100px;
+            z-index: 1000;
+        }
+
+        .nav-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-container li {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .nav-container a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 15px;
+            display: block;
+            background-color: #293a52;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-container a:hover {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            border-radius: 5px;
+        }
+
+        .nav-container li:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            padding: 10px 15px;
+            color: #333;
+            background-color: #fff;
+            font-weight: normal;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 
 <body>
+    <!-- Menú de navegación -->
+    <div class="nav-container">
+        <ul>
+            <li>
+                <a href="#">Material</a>
+                <div class="dropdown-content">
+                    <a href="MaterialAcademico.html">Material Académico</a>
+                    <a href="drive.html">Grabaciones y Enlaces</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
     <a href="SicauEstudiantes.html" class="back-button">&#8592; Regresar</a>
-    <img src="images/c.png">
-    <table>
-        <thead>
-            <tr>
-                <th>Hora</th>
-                <th>Lunes</th>
-                <th>Martes</th>
-                <th>Miércoles</th>
-                <th>Jueves</th>
-                <th>Viernes</th>
-            </tr>
-        </thead>
-        <tbody id="asesoriasTableBody">
-            <tr>
-                <td>08:00 - 09:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>09:00 - 10:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>10:00 - 11:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>11:00 - 12:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>12:00 - 13:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>13:00 - 14:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>14:00 - 15:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>15:00 - 16:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>16:00 - 17:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="container">
+        <h1>Horarios de Asesorías</h1>
+        <input type="text" id="searchBar" class="search-bar" placeholder="Buscar asesoría por profesor o materia...">
+        <div class="table-container" id="horarios-container">
+            <!-- Aquí se insertarán las tablas dinámicamente -->
+        </div>
+    </div>
+
     <script>
-        async function cargarAsesorias() {
-            try {
-                // Modificación de la URL para hacer fetch correctamente
-                const response = await fetch('http://localhost:3000/get-asesorias');
-                const asesorias = await response.json();
+        document.addEventListener("DOMContentLoaded", async function () {
+            const departamentos = [
+                { id: 1, nombre: "Fundamentación Básica" },
+                { id: 2, nombre: "Mecánica" },
+                { id: 3, nombre: "Electrónica" }
+            ];
 
-                if (response.ok) {
-                    const tableBody = document.getElementById('asesoriasTableBody');
-
-                    // Limpiar las celdas de días para evitar datos duplicados
-                    Array.from(tableBody.rows).forEach(row => {
-                        for (let i = 1; i < row.cells.length; i++) {
-                            row.cells[i].innerHTML = ''; // Limpiar las celdas de los días
-                        }
-                    });
-
-                    // Iterar sobre las asesorías y colocarlas en sus casillas correspondientes
-                    asesorias.forEach(asesoria => {
-                        const diaIndex = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].indexOf(asesoria.Dia) + 1;
-
-                        const horaIndices = {
-                            '08:00': 0,
-                            '09:00': 1,
-                            '10:00': 2,
-                            '11:00': 3,
-                            '12:00': 4,
-                            '13:00': 5,
-                            '14:00': 6,
-                            '15:00': 7,
-                            '16:00': 8,
-                            '17:00': 9
-                        };
-
-                        const horaIndexIni = horaIndices[asesoria.HoraIni];
-                        const horaIndexFin = horaIndices[asesoria.HoraFin];
-
-                        if (horaIndexIni !== undefined && diaIndex !== 0) {
-                            const horasOcupadas = horaIndexFin - horaIndexIni;
-
-                            for (let i = 0; i < horasOcupadas; i++) {
-                                const cell = tableBody.rows[horaIndexIni + i].cells[diaIndex];
-
-                                if (cell.innerHTML === '') {
-                                    cell.innerHTML = `
-                    <div>
-                        <strong>${asesoria.NombreProfesor}</strong><br>
-                        ${asesoria.NombreMateria}<br>
-                        <a href="${asesoria.Link_Asesoria}" target="_blank">Link Asesoría</a><br>
-                        <a href="${asesoria.Link_Material}" target="_blank">Link Material</a>
-                    </div>
-                `;
-                                    // Agrega la clase CSS para resaltar la celda
-                                    cell.classList.add('ocupada');
-                                }
-                            }
-                        }
-                    });
-
-                } else {
-                    alert('Error al obtener el cronograma de asesorías: ' + asesorias.message);
+            for (let dep of departamentos) {
+                try {
+                    const horarios = await obtenerHorariosPorDepartamento(dep.id);
+                    crearTablaHorarios(dep.nombre, horarios);
+                } catch (error) {
+                    console.error("Error al obtener los horarios:", error);
                 }
-            } catch (error) {
-                alert('Error de conexión: ' + error.message);
             }
+        });
+
+        async function obtenerHorariosPorDepartamento(departamentoId) {
+            const response = await fetch(`/get-horario-por-departamento?id=${departamentoId}`);
+            if (!response.ok) {
+                throw new Error("Error al obtener los horarios del servidor");
+            }
+            return await response.json();
         }
 
-        // Llamar a la función para cargar las asesorías al cargar la página
-        cargarAsesorias();
+        function crearTablaHorarios(departmentName, horarios) {
+            const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+            const horas = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+
+            const table = document.createElement("table");
+            const tbody = document.createElement("tbody");
+            const thead = document.createElement("thead");
+
+            let headerRow = document.createElement("tr");
+            headerRow.appendChild(document.createElement("th"));
+            diasSemana.forEach(dia => {
+                const th = document.createElement("th");
+                th.textContent = dia;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            horas.forEach(hora => {
+                let row = document.createElement("tr");
+                const tdHora = document.createElement("td");
+                tdHora.textContent = hora;
+                row.appendChild(tdHora);
+
+                diasSemana.forEach(dia => {
+                    const td = document.createElement("td");
+                    const asesorias = horarios.filter(asesoria => asesoria.HoraIni === hora && asesoria.Dia === dia);
+
+                    if (asesorias.length > 0) {
+                        td.innerHTML = asesorias.map(asesoria => `
+                            <div>
+                                <strong>${asesoria.Profesor}</strong><br>
+                                <em>${asesoria.Materia}</em><br>
+                                <a href="${asesoria.Link_Asesoria}" target="_blank">Asesoría</a><br>
+                                <a href="${asesoria.Link_Material}" target="_blank">Material</a>
+                            </div>
+                        `).join('');
+                    } else {
+                        td.classList.add("empty");
+                    }
+                    row.appendChild(td);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            const tableContainer = document.getElementById('horarios-container');
+            const departmentTitle = document.createElement('h3');
+            departmentTitle.textContent = departmentName;
+            tableContainer.appendChild(departmentTitle);
+            tableContainer.appendChild(table);
+        }
+
+        function searchAndHighlight() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const cells = document.querySelectorAll('#horarios-container td');
+
+            cells.forEach(cell => {
+                cell.classList.remove('highlight');
+                if (searchTerm && cell.innerText.toLowerCase().includes(searchTerm)) {
+                    cell.classList.add('highlight');
+                }
+            });
+        }
+
+        document.getElementById('searchBar').addEventListener('input', searchAndHighlight);
     </script>
 </body>
 

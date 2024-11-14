@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Académico</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 3rem;
+            text-align: center;
+        }
+        #documentos-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .documento-card {
+            background-color: #fff;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            padding: 40px;
+            width: 600px;
+            height: 550px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .documento-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .documento-card h3 {
+            font-size: 25px;
+            margin-bottom: 20px;
+            color: #4A90E2;
+            font-weight: bold;
+        }
+        .documento-card p {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #555;
+        }
+        .file-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        .file-preview {
+            margin: 20px 0;
+        }
+        .file-preview img {
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        .file-preview iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Material Académico</h1>
+
+    <div id="documentos-lista">
+        <!-- Aquí se llenarán los datos de los documentos -->
+    </div>
+
+    <script>
+        fetch('/materiales.json')
+            .then(response => response.json())
+            .then(data => {
+                const documentosLista = document.getElementById('documentos-lista');
+                console.log("Datos cargados:", data);
+    
+                // Mostrar todos los documentos
+                function mostrarDocumentos() {
+                    documentosLista.innerHTML = ""; // Limpiar lista antes de mostrar
+    
+                    // Mostrar los documentos
+                    data.forEach(documento => {
+                        const card = document.createElement('div');
+                        card.classList.add('documento-card');
+    
+                        const titulo = document.createElement('h3');
+                        titulo.textContent = documento.archivo;
+                        card.appendChild(titulo);
+    
+                        const info = document.createElement('div');
+                        info.innerHTML = ` 
+                            <p><strong>Profesor:</strong> ${documento.profesor}</p>
+                            <p><strong>Materia:</strong> ${documento.NombreMateria}</p>
+                            <p><strong>Departamento:</strong> ${documento.NombreDepartamento}</p>
+                        `;
+                        card.appendChild(info);
+    
+                        // Vista previa de archivo
+                        const filePreview = document.createElement('div');
+                        filePreview.classList.add('file-preview');
+                        const fileExtension = documento.archivo.split('.').pop().toLowerCase();
+                        const filePath = '/uploads/' + documento.archivo; // Ruta del archivo
+    
+                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                            const img = document.createElement('img');
+                            img.src = filePath;
+                            img.alt = 'Vista previa de la imagen';
+                            filePreview.appendChild(img);
+                        } else if (fileExtension === 'pdf') {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = filePath;
+                            iframe.alt = 'Vista previa del PDF';
+                            filePreview.appendChild(iframe);
+                        } else {
+                            filePreview.innerHTML = `<p>Previsualización no disponible para este tipo de archivo.</p>`;
+                        }
+    
+                        card.appendChild(filePreview);
+    
+                        const archivoLink = document.createElement('a');
+                        archivoLink.href = filePath; // Ruta al archivo completo
+                        archivoLink.textContent = 'Ver archivo completo';
+                        archivoLink.classList.add('file-link');
+                        card.appendChild(archivoLink);
+    
+                        documentosLista.appendChild(card);
+                    });
+                }
+    
+                // Mostrar todos los documentos al cargar
+                mostrarDocumentos();
+            })
+            .catch(error => {
+                console.error('Error al cargar los datos:', error);
+            });
+    </script>
+</body>
+</html>

@@ -4,21 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SICAU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .paap-button {
-            padding: 10px 20px;
-            background-color: #007BFF; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer;
-            font-size: 16px; 
+        /* Fuente global */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
         }
 
+        /* Título centrado */
+        h1 {
+            font-size: 32px;
+            color: #162f46;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Botón de cerrar sesión */
         .back-button {
             position: absolute;
             top: 20px;
-            left: 1200px; /* Cambié la posición para que esté visible */
+            right: 20px;
             background-color: #162f46;
             color: white;
             padding: 10px 15px;
@@ -31,11 +44,54 @@
         .back-button:hover {
             background-color: #0f1f30;
         }
+
+        /* Contenedor para la sección de botones */
+        .container {
+            background-color: #fff;
+            padding: 30px 50px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 300px;
+        }
+
+        /* Estilo para el título de la sección */
+        .container h2 {
+            font-size: 24px;
+            color: #162f46;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Estilo para los botones */
+        .button {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            background-color: #293a52;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        /* Efecto hover para los botones */
+        .button:hover {
+            background-color: #293a52;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
     <h1>PROFESORES</h1>
     <a href="InicioSesion.html" class="back-button">&#8592; Cerrar Sesion</a>
-    <button class="paap-button" onclick="window.location.href='P_Profesores.html'">Ir a PAAP</button>
+
+    <div class="container">
+        <h2>Gestión de funciones PAAP</h2>
+        <a href="P_Profesores.html" class="button">Ir a PAAP</a>
+        <a href="Profesor_ElegirHorario.html" class="button">Elegir Horario</a>
+    </div>
 </body>
 </html>

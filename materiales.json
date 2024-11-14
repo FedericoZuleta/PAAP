@@ -1,0 +1,40 @@
+[
+  {
+    "cedula": "3456789012",
+    "profesor": "Profesor C",
+    "departamento": "2",
+    "NombreDepartamento": "Departamento Electronica",
+    "materia": "3",
+    "NombreMateria": "Cálculo Diferencial",
+    "archivo": "p3.png",
+    "ruta": "C:\\Users\\Feder\\OneDrive\\Imágenes\\PAAPV\\uploads\\p3.png"
+  },
+  {
+    "cedula": "1234567890",
+    "profesor": "Profesor A",
+    "departamento": "1",
+    "NombreDepartamento": "Departamento Electrica",
+    "materia": "1",
+    "NombreMateria": "Cálculo Diferencial",
+    "archivo": "P2.png",
+    "ruta": "C:\\Users\\Feder\\OneDrive\\Imágenes\\PAAPV\\uploads\\P2.png"
+  },
+  {
+    "cedula": "3456789012",
+    "profesor": "Profesor C",
+    "departamento": "2",
+    "NombreDepartamento": "Departamento Electronica",
+    "materia": "4",
+    "NombreMateria": "Matemáticas Operativas",
+    "enlaceDrive": "https://drive.google.com/file/d/1cij-8P1c7GwjeiEEQiZemcspj6zgdRFX/view?usp=sharing"
+  },
+  {
+    "cedula": "2345678901",
+    "profesor": "Profesor B",
+    "departamento": "3",
+    "NombreDepartamento": "Departamento Mecanica",
+    "materia": "5",
+    "NombreMateria": "Cálculo Integral",
+    "enlaceDrive": "https://docs.google.com/document/d/15lZnJ4N-V58h3D104O9Mbsnk_pgfmgMgu9ovqev2PZg/edit?usp=sharing"
+  }
+]
